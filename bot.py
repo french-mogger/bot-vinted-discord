@@ -10,8 +10,16 @@ DISCORD_TOKEN = os.environ["DISCORD_TOKEN"]
 CHANNEL_ID = int(os.environ["CHANNEL_ID"])
 
 SEARCHES = [
-    {"search_text": "nike running", "price_to": 10},
-    {"search_text": "Ralph Laurent torsadé", "price_to": 20},
+    {
+        "search_text": "nike running",
+        "price_to": 10,
+        "exclude_words": []
+    },
+    {
+        "search_text": "Ralph Laurent torsadé",
+        "price_to": 20,
+        "exclude_words": []
+    },
 ]
 
 seen_ids = set()
@@ -26,6 +34,15 @@ def get_items(search):
             "per_page": 20,
         }
         items = scraper.search(params)
+        
+        # Filtrer les mots exclus
+        exclude = search.get("exclude_words", [])
+        if exclude:
+            items = [
+                item for item in items
+                if not any(word.lower() in item.title.lower() for word in exclude)
+            ]
+        
         logging.info(f"{len(items)} annonces pour '{search['search_text']}'")
         return items
     except Exception as e:
@@ -55,7 +72,7 @@ def send_discord(item, search_text):
     }
 
     if photo_url:
-        embed["thumbnail"] = {"url": photo_url}
+        embed["image"] = {"url": photo_url}
 
     r = requests.post(
         f"https://discord.com/api/v10/channels/{CHANNEL_ID}/messages",
