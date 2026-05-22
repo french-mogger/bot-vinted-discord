@@ -33,6 +33,16 @@ def get_items(search):
         return []
 
 def send_discord(item, search_text):
+    # Extraire l'URL de la photo correctement
+    photo_url = None
+    if item.photo:
+        if isinstance(item.photo, str):
+            photo_url = item.photo
+        elif isinstance(item.photo, dict):
+            photo_url = item.photo.get("url")
+        elif hasattr(item.photo, "url"):
+            photo_url = item.photo.url
+
     embed = {
         "title": item.title,
         "url": item.url,
@@ -42,8 +52,11 @@ def send_discord(item, search_text):
             {"name": "💶 Prix", "value": f"{item.price} {item.currency}", "inline": True},
             {"name": "📏 Taille", "value": item.size_title or "N/A", "inline": True},
         ],
-        "thumbnail": {"url": item.photo} if item.photo else {}
     }
+
+    if photo_url:
+        embed["thumbnail"] = {"url": photo_url}
+
     r = requests.post(
         f"https://discord.com/api/v10/channels/{CHANNEL_ID}/messages",
         headers={
@@ -53,7 +66,7 @@ def send_discord(item, search_text):
         json={"embeds": [embed]},
         timeout=10
     )
-    logging.info(f"Discord status: {r.status_code} - {r.text}")
+    logging.info(f"Discord status: {r.status_code}")
 
 def run():
     logging.info("Bot démarré - chargement initial...")
