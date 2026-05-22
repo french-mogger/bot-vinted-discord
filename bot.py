@@ -44,7 +44,7 @@ def send_discord(item, search_text):
         ],
         "thumbnail": {"url": item.photo} if item.photo else {}
     }
-    requests.post(
+    r = requests.post(
         f"https://discord.com/api/v10/channels/{CHANNEL_ID}/messages",
         headers={
             "Authorization": f"Bot {DISCORD_TOKEN}",
@@ -53,6 +53,7 @@ def send_discord(item, search_text):
         json={"embeds": [embed]},
         timeout=10
     )
+    logging.info(f"Discord status: {r.status_code} - {r.text}")
 
 def run():
     logging.info("Bot démarré - chargement initial...")
