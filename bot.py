@@ -11,13 +11,13 @@ CHANNEL_ID = int(os.environ["CHANNEL_ID"])
 
 SEARCHES = [
     {
-        "search_text": "nike running",
+        "search_text": "t-shirt nike running",
         "price_to": 10,
         "exclude_words": []
     },
     {
-        "search_text": "Ralph Laurent torsadé",
-        "price_to": 20,
+        "search_text": "nike miller",
+        "price_to": 15,
         "exclude_words": []
     },
 ]
