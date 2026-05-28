@@ -13,12 +13,17 @@ SEARCHES = [
     {
         "search_text": "t-shirt nike running",
         "price_to": 10,
-        "exclude_words": [short]
+        "exclude_words": []
     },
     {
-        "search_text": "tee nike miller",
+        "search_text": "nike trail",
         "price_to": 10,
-        "exclude_words": [short]
+        "exclude_words": []
+    },
+    {
+        "search_text": "Ralph laurent t-shirt",
+        "price_to": 10,
+        "exclude_words": []
     },
 ]
 
